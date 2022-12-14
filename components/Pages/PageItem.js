@@ -1,7 +1,6 @@
 import React from 'react';
-import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
-import {Button, Text} from '@react-native-material/core';
-
+import {ScrollView, StyleSheet} from 'react-native';
+import {Text} from '@react-native-material/core';
 import ItemCards from '../content/ItemCards';
 
 const PageItem = ({
@@ -40,24 +39,20 @@ const PageItem = ({
     navigation.navigate('Home');
     setChosenItems(shirt + pants + shoes);
   };
+
   return (
     <ScrollView>
-        <Text style={styles.textHeader}>Please choose {item.name}</Text>
-        <ItemCards data={data} chooseItem={chooseItem} />
+      <Text style={styles.textHeader}>Please Select {item.name}</Text>
+      <ItemCards data={data} chooseItem={chooseItem} icon={item.icon} />
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   textHeader: {
-    fontSize: 30,
+    fontSize: 28,
     margin: 10,
-  },
-  baseText: {
-    flex: 1,
-    // textAlign: 'center',
-    fontSize: 20,
-    margin: 10,
+    color: 'midnightblue',
   },
 });
 

@@ -1,11 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {
-  ActivityIndicator,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import React from 'react';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import {Text} from '@react-native-material/core';
 import {Button} from 'react-native-paper';
 
@@ -38,20 +32,20 @@ const Home = ({
       <Text style={styles.textHeader}>Home</Text>
       <Text style={styles.baseText}>You Own {outfitsNum} Outfits</Text>
       <Button
-        style={{marginHorizontal: 40, marginVertical: 8}}
-        mode="elevated"
+        style={styles.button}
+        mode="contained-tonal"
         onPress={() => navigation.navigate('shirt')}>
         Choose Shirt
       </Button>
       <Button
-        style={{marginHorizontal: 40, marginVertical: 8}}
+        style={styles.button}
         mode="contained-tonal"
         onPress={() => navigation.navigate('pants')}>
         Choose Pants
       </Button>
       <Button
-        style={{marginHorizontal: 40, marginVertical: 8}}
-        mode="outlined"
+        style={styles.button}
+        mode="contained-tonal"
         onPress={() => navigation.navigate('shoes')}>
         Choose Shoes
       </Button>
@@ -65,7 +59,7 @@ const Home = ({
           <Button
             mode="contained"
             color="darkgreen"
-            style={{margin: 40, alignSelf: 'flex-end'}}
+            style={styles.doneButton}
             onPress={onSuccess}>
             Done
           </Button>
@@ -87,7 +81,6 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     backgroundColor: '#fff',
     margin: 20,
-    // marginVertical: 30,
   },
   textHeader: {
     textAlign: 'center',
@@ -103,6 +96,11 @@ const styles = StyleSheet.create({
     color: '#48494B',
   },
   completed: {textAlign: 'center', fontSize: 20},
+  button: {marginHorizontal: 40, marginVertical: 8},
+  doneButton: {
+    margin: 40,
+    alignSelf: 'flex-end',
+  },
 });
 
 export default Home;

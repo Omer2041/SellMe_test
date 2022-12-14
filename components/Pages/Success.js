@@ -1,15 +1,13 @@
 import React from 'react';
-import {SafeAreaView, ScrollView, StyleSheet, View, Image} from 'react-native';
-
-import {Text} from '@react-native-material/core';
-import OutfitTable from '../content/OutfitTable';
+import {ScrollView, StyleSheet, View, Image, Text} from 'react-native';
 import OutfitList from '../content/OutfitList';
 import successImagesConfig from '../config/SuccessImages';
 import {Button} from 'react-native-paper';
 
 const Success = ({navigation, outfits}) => {
   const rnd = Math.floor(Math.random() * successImagesConfig.length);
-  console.log(outfits);
+  // console.log(outfits);
+
   return (
     <ScrollView>
       <Text style={styles.textHeader} onPress={() => console.log(outfits)}>
@@ -17,7 +15,7 @@ const Success = ({navigation, outfits}) => {
       </Text>
       <View style={styles.headerBox}>
         <Image
-          style={{width: '100%', height: '100%', borderRadius: 30}}
+          style={styles.successLogo}
           source={{
             uri: successImagesConfig[rnd],
           }}
@@ -25,12 +23,7 @@ const Success = ({navigation, outfits}) => {
       </View>
       <OutfitList data={outfits} />
       <Button
-        style={{
-          width: '60%',
-          alignSelf: 'center',
-          marginVertical: 50,
-          // backgroundColor: 'dodgerblue',
-        }}
+        style={styles.button}
         mode="contained"
         onPress={() => navigation.navigate('Home')}>
         Choose Another Outfit
@@ -42,18 +35,23 @@ const Success = ({navigation, outfits}) => {
 const styles = StyleSheet.create({
   headerBox: {
     justifyContent: 'center',
-    elevation: 20,
     height: 180,
     borderRadius: 30,
     backgroundColor: '#fff',
-    margin: 20,
-    // marginVertical: 30,
+    margin: 2,
   },
   textHeader: {
     textAlign: 'center',
     fontSize: 20,
-    color: 'green',
+    color: 'rgb(158, 42, 155)',
     marginVertical: 30,
+    fontWeight: 'bold',
+  },
+  successLogo: {width: '100%', height: '100%', borderRadius: 30},
+  button: {
+    width: '60%',
+    alignSelf: 'center',
+    marginVertical: 50,
   },
 });
 export default Success;

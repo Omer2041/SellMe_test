@@ -1,19 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import type {Node} from 'react';
-
-import PageItem from './components/Pages/PageItem';
 import Home from './components/Pages/Home';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import PageItem from './components/Pages/PageItem';
 import pageConfig from './components/config/PageConfig';
 import Success from './components/Pages/Success';
-import {ActivityIndicator} from '@react-native-material/core';
-const Stack = createNativeStackNavigator();
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {useDispatch, useSelector} from 'react-redux';
 import {getData} from './redux/ducks/data';
+import {ActivityIndicator} from '@react-native-material/core';
+
+const Stack = createNativeStackNavigator();
 
 const App: () => Node = () => {
-  // const [data, setData] = useState(0);
   const [outfits, setOutfits] = useState([]);
   const [selectedShirt, setSelectedShirt] = useState(0);
   const [selectedPants, setSelectedPants] = useState(0);
@@ -22,13 +21,14 @@ const App: () => Node = () => {
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
+  const data = useSelector(state => {
+    return state.data.data;
+  });
+  console.log(data);
 
   useEffect(() => {
     dispatch(getData());
-  }, [dispatch]);
-
-  const data = useSelector(state => state.data.data);
-  console.log(data);
+  }, [dispatch, loading]);
 
   return (
     <NavigationContainer>

@@ -1,40 +1,49 @@
 import React, {useState} from 'react';
 import {
-  FlatList,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
   View,
-  Modal,
-  Pressable,
+  Image,
 } from 'react-native';
-import {
-  // Button,
-  Text,
-  Provider,
-  // Dialog,
-  DialogHeader,
-  DialogContent,
-  DialogActions,
-  Badge,
-  Chip,
-} from '@react-native-material/core';
-import {Dialog, Divider, Button} from 'react-native-paper';
-// import { Modal } from 'react-native-paper';
-const ItemCards = ({data, chooseItem}) => {
+import {Text, Chip} from '@react-native-material/core';
+import {Dialog, Divider, Button, Card} from 'react-native-paper';
+
+const ItemCards = ({data, chooseItem, icon}) => {
   const [chosenItemId, setChosenItemId] = useState(null);
   const [color, setColor] = useState(null);
   const [size, setSize] = useState(null);
   const [showSizes, setShowSizes] = useState(false);
   const [dialog, setDialog] = useState(false);
 
+  const MyDialog = () => {
+    return (
+      <Dialog
+        visible={dialog}
+        onDismiss={() => setDialog(false)}
+        style={styles.dialog}>
+        <Dialog.Title> Select Item </Dialog.Title>
+        <Dialog.Content>
+          <Text>Are u sure you want to select this item?</Text>
+        </Dialog.Content>
+        <Dialog.Actions>
+          <Button compact mode="text" onPress={() => setDialog(false)}>
+            Cancel
+          </Button>
+          <Button compact mode="contained-tonal" onPress={() => onApprove()}>
+            OK
+          </Button>
+        </Dialog.Actions>
+      </Dialog>
+    );
+  };
+
   const handleChooseColor = (item, chosenColor) => {
     setColor(chosenColor);
-    // console.log(chosenColor);
     setShowSizes(true);
     setChosenItemId(item.id);
   };
+
   const handleChooseSize = chosenSize => {
     setSize(chosenSize);
     setDialog(true);
@@ -55,22 +64,22 @@ const ItemCards = ({data, chooseItem}) => {
   };
 
   return (
-    <Provider>
+    <>
       <ScrollView>
         <Text style={{margin: 10}}>Found {data.length} items:</Text>
-        <View
-          style={{
-            width: '100%',
-            height: '85%',
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-          }}>
+        <View style={styles.container}>
           {data.map(item => {
             return (
-              <View key={item.id} style={styles.box}>
-                <Text style={styles.text}>{item.name}</Text>
-                <Divider style={{margin: 10, color: 'black'}} />
-                <Text style={styles.text}>{item.brand}</Text>
+              <Card key={item.id} style={styles.box}>
+                <Card.Title
+                  title={item.name}
+                  subtitle={item.brand}
+                  titleStyle={{fontWeight: 'bold'}}
+                  right={() => {
+                    return <Image style={styles.tinyLogo} source={icon} />;
+                  }}
+                />
+                <Divider style={styles.divider} />
                 <View style={styles.colorsBox}>
                   {item.colors.map((col, index) => {
                     return (
@@ -78,17 +87,17 @@ const ItemCards = ({data, chooseItem}) => {
                         key={index}
                         style={{
                           backgroundColor: col,
-                          // borderRadius: 10,
                           height: 30,
                           width: 30,
-                          // padding: 5,
                           margin: 4,
                           marginTop: 15,
                           borderColor:
                             color == col && item.id == chosenItemId
                               ? 'black'
-                              : 'silver',
-                          borderWidth: 3,
+                              : 'whitesmoke',
+                          borderWidth: 2,
+                          elevation: 10,
+                          shadowColor: 'black',
                         }}
                         onPress={() => handleChooseColor(item, col)}
                       />
@@ -103,104 +112,58 @@ const ItemCards = ({data, chooseItem}) => {
                         <TouchableOpacity
                           key={index}
                           onPress={() => handleChooseSize(size)}
-                          style={{
-                            padding: 5,
-                            margin: 3,
-                            marginTop: 15,
-                            backgroundColor: 'whitesmoke',
-                            borderRadius: 10,
-                            elevation: 2,
-                          }}>
+                          style={styles.sizesButton}>
                           <Text>{size}</Text>
                         </TouchableOpacity>
                       );
                     })}
                 </View>
-              </View>
+              </Card>
             );
           })}
         </View>
       </ScrollView>
-      <Dialog visible={dialog} onDismiss={() => setDialog(false)}>
-        <Dialog.Title> Select Item </Dialog.Title>
-        <Dialog.Content>
-          <Text>Are u sure you want to select this item?</Text>
-        </Dialog.Content>
-        <Dialog.Actions>
-          <Button compact mode="text" onPress={() => setDialog(false)}>
-            Cancel
-          </Button>
-          <Button compact mode="contained-tonal" onPress={() => onApprove()}>
-            OK
-          </Button>
-        </Dialog.Actions>
-      </Dialog>
-    </Provider>
+      <MyDialog />
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  // centeredView: {
-  //   flex: 1,
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  //   marginTop: 22,
-  // },
-  // modalView: {
-  //   margin: 20,
-  //   backgroundColor: 'white',
-  //   borderRadius: 20,
-  //   padding: 35,
-  //   alignItems: 'center',
-  //   shadowColor: '#000',
-  //   shadowOffset: {
-  //     width: 0,
-  //     height: 2,
-  //   },
-  //   shadowOpacity: 0.25,
-  //   shadowRadius: 4,
-  //   elevation: 5,
-  // },
-  // button: {
-  //   borderRadius: 20,
-  //   padding: 10,
-  //   elevation: 2,
-  // },
-  // buttonOpen: {
-  //   backgroundColor: '#F194FF',
-  // },
-  // buttonClose: {
-  //   backgroundColor: '#2196F3',
-  // },
-  // textStyle: {
-  //   color: 'white',
-  //   fontWeight: 'bold',
-  //   textAlign: 'center',
-  // },
-  // modalText: {
-  //   marginBottom: 15,
-  //   textAlign: 'center',
-  // },
+  container: {
+    width: '100%',
+    height: '85%',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
   box: {
-    display: 'flex',
     margin: 7,
     padding: 5,
     backgroundColor: 'white',
-    // 'linear-gradient(109.6deg, rgb(36, 45, 57) 11.2%, rgb(16, 37, 60) 51.2%, rgb(0, 0, 0) 98.6%)', // borderColor: 'black',
     width: '46%',
     borderRadius: 2,
     elevation: 10,
   },
-  text: {
-    textAlign: 'center',
-    fontWeight: 'bold',
-    // color: 'white',
-  },
+
   colorsBox: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     flexWrap: 'wrap',
   },
+  divider: {margin: 7, marginHorizontal: 15, color: 'black'},
+  tinyLogo: {
+    width: 30,
+    height: 30,
+    marginRight: 15,
+  },
+  sizesButton: {
+    padding: 5,
+    margin: 3,
+    marginTop: 15,
+    backgroundColor: 'whitesmoke',
+    borderRadius: 10,
+    elevation: 2,
+  },
+  dialog: {backgroundColor: 'white'},
 });
 export default ItemCards;
